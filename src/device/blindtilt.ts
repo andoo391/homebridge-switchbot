@@ -1185,7 +1185,7 @@ export class BlindTilt {
         if (homekitPosition <= 50) {
           // homekit 0..50 -> device down;0..100 
           // NOTE: 'down;0' results in api error, hence +1. 'up;0' does not do this, for whatever reason
-          return ['down', homekitPosition * 2 + homekitPosition==0 ? 1 : 0];
+          return ['down', (homekitPosition * 2) + (homekitPosition==0 ? 1 : 0)];
         } else {
           // homekit 51..100 -> device up;100..0
           return ['up', ((100 - homekitPosition) * 2)];
@@ -1201,7 +1201,7 @@ export class BlindTilt {
         } else {
           // homekit 51..100 --> device down;100..1
           // NOTE: 'down;0' results in api error, hence +1. 'up;0' does not do this, for whatever reason
-          return ['down', ((100 - homekitPosition) * 2) + homekitPosition==100 ? 1 : 0];
+          return ['down', ((100 - homekitPosition) * 2) + (homekitPosition==100 ? 1 : 0)];
         }
 
       case BlindTiltMappingMode.UseTiltForDirection:
