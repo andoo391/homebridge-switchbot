@@ -1183,11 +1183,12 @@ export class BlindTilt {
         // homekit 50 = open,
         // homekit 100 = upwards closed
         if (homekitPosition <= 50) {
-          // homekit 0..50 -> device 100..0 so scale and invert
-          return ['down', 100 - homekitPosition * 2];
+          // homekit 0..50 -> device down;0..100 
+          // NOTE: 'down;0' results in api error, hence +1. 'up;0' does not do this, for whatever reason
+          return ['down', homekitPosition * 2 + homekitPosition==0 ? 1 : 0];
         } else {
-          // homekit 50..100 -> device 0..100, so rebase, scale and invert
-          return ['up', (homekitPosition - 50) * 2];
+          // homekit 51..100 -> device up;100..0
+          return ['up', ((100 - homekitPosition) * 2)];
         }
 
       case BlindTiltMappingMode.UpAndDown:
@@ -1195,11 +1196,12 @@ export class BlindTilt {
         // homekit 50 = open,
         // homekit 100 = upwards closed
         if (homekitPosition <= 50) {
-          // homekit 0..50 -> device 0..100 so scale and invert
+          // homekit 0..50 --> device up;0..100
           return ['up', homekitPosition * 2];
         } else {
-          // homekit 50..100 -> device 100...0 so scale
-          return ['down', 100 - homekitPosition * 2];
+          // homekit 51..100 --> device down;100..1
+          // NOTE: 'down;0' results in api error, hence +1. 'up;0' does not do this, for whatever reason
+          return ['down', ((100 - homekitPosition) * 2) + homekitPosition==100 ? 1 : 0];
         }
 
       case BlindTiltMappingMode.UseTiltForDirection:
